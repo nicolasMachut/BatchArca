@@ -1,5 +1,7 @@
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
+import dao.ArcaBatchDao;
+import dao.ArcaFileDao;
+import dao.DAO;
 import dao.MongoDbDao;
 import org.bson.Document;
 
@@ -12,11 +14,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        MongoCollection arcaCollection = MongoDbConnector.INSTANCE.getCollection("arcaFile");
+        MongoDbDao arcaFileDao = new ArcaFileDao(MongoDbConnector.INSTANCE.getCollection("arcaFileDao"));
+        MongoDbDao arcaBatchDao = new ArcaBatchDao(MongoDbConnector.INSTANCE.getCollection("arcaBatch"));
 
-        MongoDbDao dao = new MongoDbDao(arcaCollection);
-
-        Document res = dao.get(new Document("Batch", "ArcaFile")
+        Document res = arcaBatchDao.get(new Document("Batch", "ArcaFile")
                 .append("end", new BasicDBObject("$exists", false)));
 
         int startLine = 0;
@@ -25,23 +26,24 @@ public class Main {
             System.out.println("on recommence");
 
             // Clearing the collection
-            arcaCollection.deleteMany(new Document());
+            arcaFileDao.deleteMany(new Document());
+            arcaBatchDao.deleteMany(new Document());
 
             Document document = new Document("Batch", "ArcaFile")
                     .append("start", new Date().getTime());
 
-            dao.save(document);
+            arcaFileDao.save(document);
 
         } else {
             System.out.println("on reprend");
-            Document doc = dao.getLastDocument();
+            Document doc = arcaFileDao.getLastDocument();
             startLine = Integer.valueOf(doc.get("lineNumber").toString());
         }
 
         System.out.println("start line : " + startLine);
         String filePath = "/home/nicolas/Bureau/ARCA/data.txt";
 
-        dao.updateOne();
-        //new FileHandler(filePath, dao, startLine).handleFile();
+        arcaFileDao.updateOne();
+        //new FileHandler(filePath, arcaFileDao, startLine).handleFile();
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by nicolas on 27/02/16.
  */
-public class MongoDbDao implements DAO<Document> {
+public class MongoDbDao implements DAO<Document, Document> {
 
     private final MongoCollection collection;
 
@@ -38,5 +38,9 @@ public class MongoDbDao implements DAO<Document> {
 
     public void updateOne () {
         this.collection.updateOne(new Document("Batch", "ArcaFile"), new Document("$set", new Document("end", new Date().getTime())));
+    }
+
+    public void deleteMany (Document document) {
+        this.collection.deleteMany(document);
     }
 }
