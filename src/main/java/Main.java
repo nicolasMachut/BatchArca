@@ -41,6 +41,7 @@ public class Main {
         System.out.println("start line : " + startLine);
         String filePath = "/home/nicolas/Bureau/ARCA/data.txt";
 
-        new FileHandler(filePath, dao, startLine).handleFile();
+        dao.updateOne();
+        //new FileHandler(filePath, dao, startLine).handleFile();
     }
 }

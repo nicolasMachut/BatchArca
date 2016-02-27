@@ -1,9 +1,9 @@
 package dao;
 
-import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,5 +34,9 @@ public class MongoDbDao implements DAO<Document> {
 
     public Document getLastDocument () {
         return (Document) this.collection.find(new Document()).sort(new Document("lineNumber", -1)).first();
+    }
+
+    public void updateOne () {
+        this.collection.updateOne(new Document("Batch", "ArcaFile"), new Document("$set", new Document("end", new Date().getTime())));
     }
 }

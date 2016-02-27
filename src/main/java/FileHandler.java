@@ -28,13 +28,15 @@ public class FileHandler {
         try (Stream<String> lines = Files.lines(path)) {
             lines.forEach(s -> handleLine(s));
 
+
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
     private void handleLine(String line) {
-        if (currentLine < startLine) {
+        if (++currentLine < startLine) {
             return;
         }
         String[] splittedLine = line.split(",");
@@ -44,7 +46,7 @@ public class FileHandler {
         Document document = new Document("timestamp", timestamp)
                 .append("value",value)
                 .append("country", country)
-                .append("lineNumber", ++currentLine);
+                .append("lineNumber", currentLine);
         dao.save(document);
     }
 }
