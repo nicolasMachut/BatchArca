@@ -31,4 +31,8 @@ public class MongoDbDao implements DAO<Document> {
     public Document get(Document data) {
         return (Document) this.collection.find(data).first();
     }
+
+    public Document getLastDocument () {
+        return (Document) this.collection.find(new Document()).sort(new Document("lineNumber", -1)).first();
+    }
 }
