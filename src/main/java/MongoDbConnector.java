@@ -8,21 +8,31 @@ import com.mongodb.client.MongoDatabase;
  */
 public class MongoDbConnector {
 
+    private MongoDatabase database;
+
+    // It's a singleton ;)
+    public final static MongoDbConnector INSTANCE = new MongoDbConnector();
+
     private MongoDbConnector () {
 
-    }
+        // Connection properties
+        String databaseName = "arcadb";
+        String host = "ds017248.mlab.com";
+        String user = "arcaBatch";
+        String password = "arca";
+        int port = 17248;
 
-    public static synchronized MongoCollection getCollection () {
         // Creating mongodb uri connection
-        MongoClientURI uri = new MongoClientURI("mongodb://arcaBatch:arca@ds017248.mlab.com:17248/arcadb");
+        MongoClientURI uri = new MongoClientURI("mongodb://" + user + ":" + password + "@" + host + ":" + port + "/" + databaseName);
 
         // Creating mongodb connection
         MongoClient mongoClient = new MongoClient(uri);
 
         // getting mongodb database
-        MongoDatabase database = mongoClient.getDatabase(uri.getDatabase());
+        database = mongoClient.getDatabase(uri.getDatabase());
+    }
 
-        // Getting mongodbCollection
-        return database.getCollection("arcaFile");
+    public MongoCollection getCollection (String collectionName) {
+        return database.getCollection(collectionName);
     }
 }

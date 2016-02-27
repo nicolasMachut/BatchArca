@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        MongoCollection arcaCollection = MongoDbConnector.getCollection();
+        MongoCollection arcaCollection = MongoDbConnector.INSTANCE.getCollection("arcaFile");
 
         MongoDbDao dao = new MongoDbDao(arcaCollection);
 
