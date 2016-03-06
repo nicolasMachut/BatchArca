@@ -1,10 +1,12 @@
 import dao.DAO;
+import org.bson.BsonDateTime;
 import org.bson.Document;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.stream.Stream;
 
 /**
@@ -39,11 +41,12 @@ public class FileHandler {
         if (++currentLine < startLine) {
             return;
         }
+
         String[] splittedLine = line.split(",");
         String timestamp = splittedLine[0];
-        String value = splittedLine[1];
+        int value = Integer.valueOf(splittedLine[1]);
         String country = splittedLine[2];
-        Document document = new Document("timestamp", timestamp)
+        Document document = new Document("timestamp", new Date(Long.valueOf(timestamp)))
                 .append("value",value)
                 .append("country", country)
                 .append("lineNumber", currentLine);
