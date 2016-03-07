@@ -1,3 +1,5 @@
+package com.arca.app.utils;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;

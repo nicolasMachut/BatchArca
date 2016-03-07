@@ -1,5 +1,6 @@
-package dao;
+package com.arca.app.dao;
 
+import com.arca.app.utils.MongoDbConnector;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
@@ -13,14 +14,10 @@ public class MongoDbDao implements DAO<Document, Document> {
 
     private final MongoCollection collection;
 
-    public MongoDbDao (MongoCollection collection) {
-        this.collection = collection;
+    public MongoDbDao (String collectionName) {
+        this.collection = MongoDbConnector.INSTANCE.getCollection(collectionName);
     }
 
-    @Override
-    public void save(List<Document> data) {
-        this.collection.insertMany(data);
-    }
 
     @Override
     public void save(Document data) {
@@ -28,16 +25,12 @@ public class MongoDbDao implements DAO<Document, Document> {
     }
 
     @Override
-    public Document get(Document data) {
+    public Document getOne(Document data) {
         return (Document) this.collection.find(data).first();
     }
 
     public Document getLastDocument () {
         return (Document) this.collection.find(new Document()).sort(new Document("lineNumber", -1)).first();
-    }
-
-    public void updateOne () {
-        this.collection.updateOne(new Document("Batch", "ArcaFile"), new Document("$set", new Document("end", new Date().getTime())));
     }
 
     public void deleteMany (Document document) {
