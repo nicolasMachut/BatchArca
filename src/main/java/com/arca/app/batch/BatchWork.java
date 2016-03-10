@@ -41,7 +41,7 @@ public class BatchWork {
 
     private int recoveryOfTheCurrentBatch() {
         int startLine = 0;
-        System.out.println("on reprend");
+        System.out.println("Reprise du batch");
         Document doc = fileDao.getLastDocument();
         if (doc != null){
             startLine = getLineNumber(doc);
@@ -54,7 +54,7 @@ public class BatchWork {
     }
 
     private void creationOfANewBatch() {
-        System.out.println("on recommence");
+        System.out.println("Démarrage du batch");
 
         // Clearing collections
         fileDao.deleteMany(new Document());
